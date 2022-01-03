@@ -46,6 +46,9 @@ io.on('connection', (socket)=>{
             }
         })
     })
+    socket.on('stop', (msg)=>{
+        client.destroy()
+    })
 })
 
 // close server connection

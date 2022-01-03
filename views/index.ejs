@@ -5,15 +5,25 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>PiSurveillancer Client</title>
-        <!-- Bootstrap CSS -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            button{
+                border: none;
+                color: white;
+                font-size: 20px;
+            }
+            #start-btn{
+                background-color: green;
+            }
+            #stop-btn{
+                background-color: red;
+            }
+        </style>
     </head>
     <body>
-		<img src="" alt="camera" id="camera">
-        <!-- jQuery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <!-- Bootstrap JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<img src="https://img.icons8.com/ios-glyphs/90/000000/camera.png" alt="camera" id="camera">
+        <br>
+        <button type="button" id="start-btn" onclick="commander('start')">Start</button>
+        <button type="button" id="stop-btn" onclick="commander('stop')">Stop</button>
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io()
@@ -24,13 +34,15 @@
                 console.log(`server connection error: ${err.message}`);
             });
 
-            // send start camera command
-            socket.emit('start', "let`s rock!")
-            
+            function commander(command) {
+                // send start camera command
+                socket.emit(command, "")
+            }
+
             // update frames
             let data = ""
             socket.on('frame', (data) =>{
-                $("#camera").attr("src", `${data}`)
+                document.getElementById("camera").src=data;
             })
 
             // connection handling
