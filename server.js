@@ -19,14 +19,17 @@ const server = net.createServer()
 
 /**
  * @todo:
- * USE SOCKET.IO NOT TCP ?????
- * USE RASPICAMERA PACKAGE, NOT OPENCV ?????
+ * USE socket.io NOT TCP(net) ?????
+ * USE pi-camera PACKAGE, NOT OPENCV ?????
+ * ADD multiple clients and cameras support
+ * THINK do pi(camera computer) need to be server (DNS-problem)
 */
 
 let cameraInterval = null
 
 // on client connection
 server.on('connection', (socket) => {
+    console.log("user connected");
     // start camera
     camera = new cv.VideoCapture(0)
     camera.set(cv.CAP_PROP_FRAME_WIDTH, 640)
