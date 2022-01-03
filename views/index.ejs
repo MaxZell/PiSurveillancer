@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PiSurveillancer Client</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+		<img src="" alt="camera" id="camera">
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io()
+            
+            // server connection handling
+            socket.on("connect_error", (err) => {
+                console.clear()
+                console.log(`server connection error: ${err.message}`);
+            });
+
+            // send start camera command
+            socket.emit('start', "let`s rock!")
+            
+            // update frames
+            let data = ""
+            socket.on('frame', (data) =>{
+                $("#camera").attr("src", `${data}`)
+            })
+
+            // connection handling
+            socket.on('error', () => {
+                console.log("Server connection failed")
+            })
+        </script>
+    </body>
+</html>
