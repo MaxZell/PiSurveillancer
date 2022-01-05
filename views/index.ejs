@@ -59,8 +59,8 @@
         </div>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = io()
-            
+            const socket = io()
+            let isActive = false
             // server connection handling
             socket.on("connect_error", (err) => {
                 console.clear()
@@ -69,19 +69,29 @@
 
             function commander(command) {
                 // send camera command
-                socket.emit(command, "")
                 if (command === "start") {
-                    document.getElementById("camera").style.borderColor = "red"
+                    // check is camera was activated before
+                    if (!isActive) {
+                        console.log("start camera")
+                        isActive = true
+                        document.getElementById("camera").style.borderColor = "red"
+                        socket.emit("start", "")
+                    }
                 } else if (command === "stop") {
-                    document.getElementById("camera").style.borderColor = "black"
-                    document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
+                    if (isActive) {
+                        console.log("stop camera")
+                        isActive = false
+                        document.getElementById("camera").style.borderColor = "black"
+                        document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
+                        socket.emit("stop", "")
+                    }
                 }
             }
 
             // update frames
             let data = ""
             socket.on('frame', (data) =>{
-                document.getElementById("camera").src=data;
+                document.getElementById("camera").src = data
             })
         </script>
     </body>
