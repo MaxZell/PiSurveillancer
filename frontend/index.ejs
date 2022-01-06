@@ -52,7 +52,7 @@
     </head>
     <body>
         <div id="camera-cont">
-            <img src="https://svgsilh.com/svg/1296797.svg" id="camera">
+            <img src="https://svgsilh.com/svg/1296797.svg" id="camera" onerror="this.src='./alternative.png'">
             <br>
             <button type="button" id="start-btn" onclick="commander('start')">Start</button>
             <button type="button" id="stop-btn" onclick="commander('stop')">Stop</button>
@@ -61,11 +61,12 @@
         <script>
             const socket = io()
             let isActive = false
+            
             // server connection handling
             socket.on("connect_error", (err) => {
                 console.clear()
-                console.log(`server connection error: ${err.message}`);
-            });
+                console.log(`server connection error: ${err.message}`)
+            })
 
             function commander(command) {
                 // send camera command
@@ -79,11 +80,13 @@
                     }
                 } else if (command === "stop") {
                     if (isActive) {
-                        console.log("stop camera")
-                        isActive = false
-                        document.getElementById("camera").style.borderColor = "black"
-                        document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
-                        socket.emit("stop", "")
+                        // setTimeout(function () {
+                            console.log("stop camera")
+                            isActive = false
+                            document.getElementById("camera").style.borderColor = "black"
+                            document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
+                            socket.emit("stop", "")
+                        // }, 5000)
                     }
                 }
             }
@@ -91,8 +94,21 @@
             // update frames
             let data = ""
             socket.on('frame', (data) =>{
-                document.getElementById("camera").src = data
+                // check brocken image
+                if (isBase64(data.substring(22))) {
+                    document.getElementById("camera").src = data
+                }
             })
+
+            function isBase64(str) {
+                if (str ==='' || str.trim() ===''){ return false; }
+                try {
+                    btoa(atob(str)) == str
+                    return true
+                } catch (err) {
+                    return false
+                }
+            }
         </script>
     </body>
 </html>

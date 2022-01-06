@@ -16,8 +16,8 @@ const server_host = '192.168.5.81'
 const server_port = 8888
 
 // join frontend path
-app.use(express.static(path.join(__dirname, 'public')))
-app.set('views', path.join(__dirname, 'views'))
+app.use(express.static(path.join(__dirname, 'frontend')))
+app.set('views', path.join(__dirname, 'frontend'))
 app.set('view engine', 'ejs')
 
 // serve views/index.ejs
@@ -27,14 +27,14 @@ app.get('/', (req, res, next)=>{
 
 // on user connection
 io.on('connection', (socket)=>{
-    console.log("user connected")
+    console.log(`user connected: <${socket.handshake.address}>`)
     socket.on('disconnect', ()=>{
-        console.log("user disconnected")
+        console.log(`user disconnected: <${socket.handshake.address}>`)
         client.destroy()
     })
     socket.on('start', (msg)=>{
         // connect to server
-		client.connect(server_port, server_host, () => console.log('Connected'))
+		client.connect(server_port, server_host, () => console.log('connected to TCP'))
         // get video from server
         let data = ""
         const separator = ","
@@ -59,10 +59,9 @@ io.on('connection', (socket)=>{
 })
 
 // close server connection
-client.on('close', () => console.log('Connection closed'))
+client.on('close', () => {
+    console.log("\x1b[31m", 'TCP connection closed', "\x1b[0m")
+})
 
-// handle errors
-client.on('error', (err) => console.error(err.code))
-
-// start server
-server.listen(port, () => console.log(`Listening on port ${port}`))
+// start frontend server
+server.listen(port, () => console.log("\x1b[32m", `Frontend listening on port ${port}`, "\x1b[0m"))
