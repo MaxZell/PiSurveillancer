@@ -1,18 +1,13 @@
 const net = require('net')
-const client = new net.Socket()
 const express = require('express')
 const path = require('path')
 const app = express()
-const server = require('http').createServer(app)
-const io = require('socket.io')(server)
+const httpserver = require('http').createServer(app)
+const io = require('socket.io')(httpserver)
 
 const port = process.env.PORT || 8000;
 
-// let server = net.createServer()
-
-
 // server data
-const server_host = '192.168.5.81'
 const server_port = 8888
 
 // join frontend path
@@ -25,7 +20,11 @@ app.get('/', (req, res, next)=>{
     res.render('index')
 })
 
+// tcp server
+const server = net.createServer()
+
 // on user connection
+<<<<<<< HEAD
 io.on('connection', (socket)=>{
     console.log(`user connected: <${socket.handshake.address}>`)
     socket.on('disconnect', ()=>{
@@ -45,19 +44,42 @@ io.on('connection', (socket)=>{
                 if (data.substring(0,27) === "/9j/4AAQSkZJRgABAQAAAQABAAD") {
                     data = data.slice(0, -separator.length) // remove separator
                     io.emit('frame', `data:image/png;base64,${data}`) // send frame to frontend
+=======
+io.on('connection', (sock)=>{
+    console.log("user connected")
+    sock.on('disconnect', ()=>{
+        console.log("user disconnected")
+        // client.destroy()
+    })
+    sock.on('start', (msg)=>{
+        console.log("start")
+        server.on('connection', (socket) => {
+            console.log("got camera connection")
+            let data = ""
+            const separator = ","
+            socket.on('data', (chunk) => {
+                data += chunk
+                if(data.includes(separator)){
+                    // check png not broken
+                    if (data.substring(0,27) === "/9j/4AAQSkZJRgABAQAAAQABAAD") {
+                        data = data.slice(0, -separator.length) // remove separator
+                        io.emit('frame', `data:image/png;base64,${data}`) // send frame to frontend
+                    }
+                    // reset data
+                    chunk = ""
+                    data = ""
+>>>>>>> afa5878b4859ba264c89fa4ad60c2b07d5eee065
                 }
-                // reset data
-                chunk = ""
-                data = ""
-            }
+            })
         })
     })
     // stop video stream
-    socket.on('stop', (msg)=>{
-        client.destroy()
+    sock.on('stop', (msg)=>{
+        // client.destroy()
     })
 })
 
+<<<<<<< HEAD
 // close server connection
 client.on('close', () => {
     console.log("\x1b[31m", 'TCP connection closed', "\x1b[0m")
@@ -65,3 +87,10 @@ client.on('close', () => {
 
 // start frontend server
 server.listen(port, () => console.log("\x1b[32m", `Frontend listening on port ${port}`, "\x1b[0m"))
+=======
+// start tcp server
+server.listen(server_port, () => console.log("\x1b[32m", "TCP server started", "\x1b[0m"))
+
+// start frontend server
+httpserver.listen(port, () => console.log("\x1b[32m", `Frontend listening on port ${port}`, "\x1b[0m"))
+>>>>>>> afa5878b4859ba264c89fa4ad60c2b07d5eee065
