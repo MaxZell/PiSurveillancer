@@ -82,9 +82,12 @@
                     if (isActive) {
                         console.log("stop camera")
                         isActive = false
-                        document.getElementById("camera").style.borderColor = "black"
-                        document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
                         socket.emit("stop", "")
+                        // wait 5 sec on last recieved frames after stop
+                        setTimeout(() => {
+                            document.getElementById("camera").style.borderColor = "black"
+                            document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
+                        }, 5000)
                     }
                 }
             }
