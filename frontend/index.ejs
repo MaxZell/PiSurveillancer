@@ -80,13 +80,11 @@
                     }
                 } else if (command === "stop") {
                     if (isActive) {
-                        // setTimeout(function () {
-                            console.log("stop camera")
-                            isActive = false
-                            document.getElementById("camera").style.borderColor = "black"
-                            document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
-                            socket.emit("stop", "")
-                        // }, 5000)
+                        console.log("stop camera")
+                        isActive = false
+                        document.getElementById("camera").style.borderColor = "black"
+                        document.getElementById("camera").src = "https://svgsilh.com/svg/1296797.svg"
+                        socket.emit("stop", "")
                     }
                 }
             }

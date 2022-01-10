@@ -22,13 +22,20 @@ app.get('/', (req, res, next)=>{
     res.render('index')
 })
 
+// close tcp connection
+function closeTCP(addr) {
+    client.destroy()
+    console.log(`user disconnected: <${addr}>`)
+}
+
 // on user connection
 io.on('connection', (socket)=>{
     console.log(`user connected: <${socket.handshake.address}>`)
+    // on browser reload or close
     socket.on('disconnect', ()=>{
-        console.log(`user disconnected: <${socket.handshake.address}>`)
-        client.destroy()
+        closeTCP(socket.handshake.address)
     })
+    // start button on frontend pressed
     socket.on('start', (msg)=>{
         // connect to server
 		client.connect(server_port, server_host, () => console.log('connected to TCP'))
@@ -46,9 +53,16 @@ io.on('connection', (socket)=>{
             }
         })
     })
+
+    // stop button on frontend pressed
     socket.on('stop', (msg)=>{
-        client.destroy()
+        closeTCP(socket.handshake.address)
     })
+})
+
+// handle server connection error
+client.on('error', () => {
+    console.log("\x1b[31m", 'TCP connection error!', "\x1b[0m")
 })
 
 // close server connection
