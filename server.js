@@ -1,14 +1,21 @@
 const cv = require('opencv4nodejs')
-const net = require('net');
+// const net = require('net')
+const tls = require('tls')
+const fs = require('fs')
 
 const port = 8888
 const fps = 24
+
+const tls_options = {
+    key: fs.readFileSync('/home/pi/certs_home_old/private-key.pem'),
+    cert: fs.readFileSync('/home/pi/certs_home_old/public-cert.pem')
+}
 
 // opencv camera
 let camera = null
 
 // tcp server
-const server = net.createServer()
+const server = tls.createServer(tls_options)
 
 /**
  * @todo:
