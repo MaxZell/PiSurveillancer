@@ -2,17 +2,20 @@
   "name": "pi-surveillancer",
   "version": "1.0.0",
   "description": "Video surveillance system",
+  "author": "Maxim Zelensky",
+  "license": "ISC",
   "main": "app.js",
   "scripts": {
     "start": "node app",
-	  "nodemon": "nodemon app"
+    "nodemon": "nodemon app"
   },
-  "author": "Maxim Zelensky",
-  "license": "ISC",
   "dependencies": {
-    "ejs": "^3.1.7",
-    "express": "^4.16.2",
-    "socket.io": "^2.0.4"
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "socket.io": "^4.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   },
   "opencv4nodejs": {
     "disableAutoBuild": 1
