@@ -21,20 +21,19 @@ PiSurveillancer
 - `/frontend` --> Client Files
 
 ## Install Server with Camera
-- Install [npm](https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi)
+- Install npm or yarn or pnpm
 - Clone Code: `git clone https://github.com/MaxZell/PiSurveillancer.git`
 - `cd PiSurveillancer`
-- Install packages: `npm install`
+- Install packages: `npm install` or `yarn install`
 - Install opencv4nodejs:
     - `npm i -g npm@6`
     - `npm i opencv4nodejs --save`
-    - `npm i -g npm@latest`
 
 ## Start Server with Camera
-`sudo node server`
+`node server`
 
 ## Start Server in Docker
-- Install [npm](https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi)
+- Install npm or yarn or pnpm
 - Clone Code: `git clone https://github.com/MaxZell/PiSurveillancer.git`
 - `cd PiSurveillancer`
 - Install packages: `npm install`
@@ -51,12 +50,12 @@ PiSurveillancer
 
 
 ## Start Frontend
-- Install [npm](https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi)
+- Install npm or yarn or pnpm
 - Clone Code: `git clone https://github.com/MaxZell/PiSurveillancer.git`
 - `cd PiSurveillancer`
 - Install packages: `npm install` or `yarn install`
 - Start: `npm start` or `yarn start`
-- Open in [npm](http://localhost:8000/)
+- Open [http://localhost:8000/](http://localhost:8000/)
 
 # Author
 [Maxim Zelensky](https://github.com/MaxZell)
